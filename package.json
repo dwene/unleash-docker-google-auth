@@ -3,15 +3,16 @@
   "description": "Docker images for unleash.",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production unleash",
-    "test:ci": "echo 'no tests for unleash-docker';"
+    "start": "node index.js"
   },
   "engines": {
     "node": "8"
   },
-  "author": "",
+  "author": "dwene",
   "license": "ISC",
   "dependencies": {
-    "unleash-server": "^3.2.9"
+    "unleash-server": "^3.2.9",
+    "@passport-next/passport": "2.1.1",
+    "@passport-next/passport-google-oauth2": "1.0.0"
   }
 }

@@ -1,12 +1,31 @@
-'use strict';
+"use strict";
 
-const fs = require("fs");
-const unleash = require('unleash-server');
+const unleash = require("unleash-server");
+const enableGoogleOauth = require("./google-auth-hook");
+const clientSecret = process.env.CLIENT_AUTHORIZATION_HEADER;
+const sessionSecret = process.env.SESSION_SECRET;
 
-let options = {};
-
-if (process.env.DATABASE_URL_FILE) {
-    options.databaseUrl = fs.readFileSync(process.env.DATABASE_URL_FILE, 'utf8');
+function enableClientAuth(app) {
+  app.use("/api/client", (req, res, next) => {
+    if (req.header("authorization") === clientSecret) {
+      next();
+    } else {
+      res.sendStatus(401);
+    }
+  });
 }
 
-unleash.start(options);
+unleash
+  .start({
+    port: 8080,
+    databaseUrl: process.env.DATABASE_URL,
+    secret: sessionSecret,
+    adminAuthentication: "custom",
+    preRouterHook: app => {
+      enableGoogleOauth(app);
+      enableClientAuth(app);
+    }
+  })
+  .then(server => {
+    console.log(`Unleash started on port:${server.app.get("port")}`);
+  });

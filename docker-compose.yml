@@ -1,20 +1,19 @@
 version: "3.3"
 services:
   web:
-    build: .
+    image: djrobotfreak/unleash-google-auth
     ports:
-      - "4242:4242"
+      - "8080:8080"
     environment:
       DATABASE_URL: postgres://postgres:unleash@db/postgres
+      AUTHORIZED_EMAILS: someemail1@gmail.com,someemail2@gmail.com #comma separated list of emails you want to authrorize
+      GOOGLE_CALLBACK_URL: yourdomain.com/api/auth/callback
+      GOOGLE_CLIENT_ID: GoogleProvidedClientID
+      GOOGLE_CLIENT_SECRET: GoogleProvidedClientSecret
+      CLIENT_AUTHORIZATION_HEADER: ClientHeaderSecret # shared secret authorization header used for authenticating your clients
+      SESSION_SECRET: SessionSecret # used for encrypting the generated web session token
     depends_on:
       - db
-    command: > 
-      sh -c "
-        while ! nc -z db 5432; do
-          echo 'Postgres is unavailable.'
-          sleep 1
-        done
-        npm run start"
   db:
     expose:
       - "5432"
