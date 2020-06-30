@@ -6,12 +6,12 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": "8"
+    "node": "12"
   },
   "author": "dwene",
   "license": "ISC",
   "dependencies": {
-    "unleash-server": "^3.2.9",
+    "unleash-server": "3.4.0",
     "@passport-next/passport": "2.1.1",
     "@passport-next/passport-google-oauth2": "1.0.0"
   }
